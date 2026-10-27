@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mini MP3 Player + LCD + MQTT</title>
+<meta name="description" content="โครงงาน Mini MP3 Player บน Arduino UNO R4 WiFi ควบคุมผ่านเว็บด้วย MQTT">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="assets/model_data.js"></script>
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="หน้าแรก">
+      <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      Mini MP3
+    </a>
+    <nav aria-label="เมนูหลัก">
+      <ul>
+        <li><a href="#abstract">บทคัดย่อ</a></li>
+        <li><a href="#video">วิดีโอ</a></li>
+        <li><a href="#detail">รายละเอียด</a></li>
+        <li><a href="#code">Source Code</a></li>
+        <li><a href="#team">สมาชิก</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <h1>Mini MP3 Player คุมผ่านเว็บ</h1>
+      <p>เครื่องเล่นเพลง Arduino ที่มีจอ LCD และสั่งงานทางไกลด้วย MQTT</p>
+      <div class="actions">
+        <!-- TODO: ใส่ลิงก์ poster ในตัวแปร LINKS ด้านล่างสุดของไฟล์ -->
+        <a class="btn btn-primary" href="https://drive.google.com/drive/folders/1UArR2UbEo8wwduD6uDtWpWT_jLwsrhoj?usp=drive_link" id="poster-link" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
+          ดู Poster
+        </a>
+        <a class="btn btn-ghost" href="https://github.com/22Lpxr/IOT-MP3-Players" id="github-link" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a10.9 10.9 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.42-2.7 5.4-5.27 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+    <div class="hero-media">
+      <div class="slot r-hero">
+        <model-viewer
+          id="project-model"
+          poster="assets/preview.png"
+          alt="โมเดล 3 มิติ Mini MP3 Player"
+          auto-rotate
+          camera-controls
+          touch-action="pan-y"
+          shadow-intensity="1"
+          shadow-softness="0.8"
+          exposure="1">
+        </model-viewer>
+        <script>
+          (function() {
+            var mv = document.getElementById("project-model");
+            if (mv) {
+              var source = (window.location.protocol === "file:" && window.MODEL_DATA_URI)
+                ? window.MODEL_DATA_URI
+                : "assets/mp3_player.glb";
+              mv.setAttribute("src", source);
+              mv.src = source;
+            }
+          })();
+        </script>
+        <span class="badge-3d" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          คลิกหมุน 3D
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABSTRACT -->
+<section id="abstract">
+  <div class="wrap abstract">
+    <div>
+      <h2>บทคัดย่อ</h2>
+    </div>
+    <div>
+      <!-- TODO: แก้บทคัดย่อให้เป็นของตัวเอง -->
+      <p>โครงงานนี้พัฒนาเครื่องเล่นเพลง MP3 ขนาดเล็กบนบอร์ด Arduino UNO R4 WiFi โดยใช้โมดูล DFPlayer Mini อ่านไฟล์เพลงจาก SD card ผู้ใช้สามารถเลือกเพลงก่อนหน้า เล่น/หยุด และเพลงถัดไปด้วยปุ่มกด ปรับระดับเสียงด้วยโพเทนชิออมิเตอร์ และดูชื่อเพลง สถานะ และระดับเสียงบนจอ LCD แบบ I2C</p>
+      <p>ระบบเชื่อมต่อ WiFi และสื่อสารผ่านโปรโตคอล MQTT กับ broker สาธารณะของ HiveMQ ทำให้หน้าเว็บสามารถส่งคำสั่งควบคุม และแสดงสถานะการเล่นแบบเรียลไทม์ได้ โดยอุปกรณ์จะส่งสถานะและรายชื่อเพลงแบบ retained และใช้ Last Will เพื่อแจ้งเมื่อสูญเสียการเชื่อมต่อ</p>
+      <ul class="keywords" aria-label="คำสำคัญ">
+        <li>Arduino UNO R4 WiFi</li>
+        <li>MQTT</li>
+        <li>DFPlayer Mini</li>
+        <li>IoT</li>
+        <li>จอ LCD</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO -->
+<section id="video" class="alt">
+  <div class="wrap">
+    <h2>วิดีโอนำเสนอ</h2>
+    <p class="lead">ดูการทำงานของเครื่องเล่นและการควบคุมผ่านหน้าเว็บ</p>
+    <!-- TODO: วางแทนข้อความในกล่องนี้ เช่น
+         <iframe src="https://drive.google.com/file/d/1pqZ9BjzPuF6sbrPWgEV2yLT88MkvJqR9/preview" title="วิดีโอนำเสนอ" allowfullscreen></iframe>
+         หรือ <video src="assets/demo.mp4" controls></video> -->
+    <div class="slot r-video" style="margin-top:44px" role="img" aria-label="ช่องใส่วิดีโอนำเสนอ">
+      <div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m10 8.5 6 3.5-6 3.5z" fill="currentColor"/></svg>
+        <iframe src="https://drive.google.com/file/d/1pqZ9BjzPuF6sbrPWgEV2yLT88MkvJqR9/preview" title="วิดีโอนำเสนอ" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="images">
+  <div class="wrap">
+    <h2>ภาพโครงงาน</h2>
+    <p class="lead">วงจร ตัวเครื่อง และหน้าจอควบคุม</p>
+    <div class="gallery">
+      <!-- TODO: เปลี่ยนข้อความในกล่องเป็น <img src="https://drive.google.com/file/d/1E0lE1fG9T9Hfn4hgIO4vkG61xziaR4an/view?usp=sharing" alt="..."> -->
+      <figure>
+        <div class="slot r-shot" role="img" aria-label="ภาพวงจรจริง">
+          <img src="https://lh3.googleusercontent.com/d/1E0lE1fG9T9Hfn4hgIO4vkG61xziaR4an=w1600" alt="ภาพวงจรจริง">
+        </div>
+        <figcaption class="cap">ภาพวงจรจริง</figcaption>
+      </figure>
+      <figure>
+        <div class="slot r-shot" role="img" aria-label="จอ LCD แสดงชื่อเพลงและระดับเสียง">
+          <img src="https://lh3.googleusercontent.com/d/1XkeG1uQVeoLPAzsWw0emwlJOdJh9yR84=w1600" alt="จอ LCD แสดงชื่อเพลงและระดับเสียง">
+        </div>
+        <figcaption class="cap">จอ LCD แสดงชื่อเพลงและระดับเสียง</figcaption>
+      </figure>
+      <figure>
+        <div class="slot r-shot" role="img" aria-label="หน้าเว็บสำหรับสั่งเล่น/หยุด/เปลี่ยนเพลง">
+          <img src="https://lh3.googleusercontent.com/d/1ru5REaJle3Pq4r9jkJQxXlvxLfogdCiw=w1600" alt="หน้าเว็บสำหรับสั่งเล่น/หยุด/เปลี่ยนเพลง">
+        </div>
+        <figcaption class="cap">หน้าเว็บสำหรับสั่งเล่น/หยุด/เปลี่ยนเพลง</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- DETAILS -->
+<section id="detail" class="alt">
+  <div class="wrap">
+    <h2>รายละเอียดโครงงาน</h2>
+    <p class="lead">เครื่องเล่นทำงานได้ทั้งด้วยปุ่มบนตัวเครื่อง และสั่งทางไกลผ่านเว็บ โดยทั้งสองทางใช้ตรรกะเดียวกันและอัปเดตสถานะให้ตรงกันเสมอ</p>
+
+    <ol class="steps">
+      <li><h3>อ่านเพลงจาก SD card</h3><p>DFPlayer Mini เล่นไฟล์ 0001.mp3, 0002.mp3 … ตามลำดับ และเล่นเพลงถัดไปให้อัตโนมัติเมื่อจบเพลง</p></li>
+      <li><h3>รับคำสั่งจากปุ่มและเว็บ</h3><p>ปุ่ม 3 ปุ่มและคำสั่ง MQTT เรียกฟังก์ชันเดียวกัน คือ เล่น หยุด ก่อนหน้า ถัดไป หรือเลือกเพลงที่ต้องการ</p></li>
+      <li><h3>แสดงและแชร์สถานะ</h3><p>ชื่อเพลง สถานะ และระดับเสียงแสดงบน LCD พร้อมส่งขึ้น MQTT ให้หน้าเว็บอัปเดตตามทันที</p></li>
+    </ol>
+
+    <div class="two">
+      <div class="table-box">
+        <div class="table-title">การต่อวงจร</div>
+        <table>
+          <thead><tr><th>อุปกรณ์</th><th>ขา Arduino</th></tr></thead>
+          <tbody>
+            <tr><td>DFPlayer TX</td><td><code>D0</code></td></tr>
+            <tr><td>DFPlayer RX (ผ่านตัวต้านทาน 1k)</td><td><code>D1</code></td></tr>
+            <tr><td>ปุ่ม ก่อนหน้า</td><td><code>D2</code></td></tr>
+            <tr><td>ปุ่ม เล่น/หยุด</td><td><code>D3</code></td></tr>
+            <tr><td>ปุ่ม ถัดไป</td><td><code>D4</code></td></tr>
+            <tr><td>โพเทนชิออมิเตอร์ (ขากลาง)</td><td><code>A0</code></td></tr>
+            <tr><td>LCD I2C (SDA / SCL)</td><td><code>A4</code> / <code>A5</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-box">
+        <div class="table-title">หัวข้อ MQTT (Topic)</div>
+        <table>
+          <thead><tr><th>Topic</th><th>ทิศทาง และข้อมูล</th></tr></thead>
+          <tbody>
+            <tr><td><code>BASE/cmd</code></td><td>เว็บส่งมา: <code>toggle</code> <code>prev</code> <code>next</code> <code>play:N</code></td></tr>
+            <tr><td><code>BASE/status</code></td><td>บอร์ดส่งไป: เพลง สถานะ ระดับเสียง (JSON, retained)</td></tr>
+            <tr><td><code>BASE/playlist</code></td><td>บอร์ดส่งไป: รายชื่อเพลง (JSON, retained)</td></tr>
+            <tr><td><code>BASE/online</code></td><td><code>1</code> เมื่อเชื่อมต่อ <code>0</code> เมื่อหลุด (Last Will)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="two">
+      <div class="info-card">
+        <h3>เครื่องมือและไลบรารี</h3>
+        <p class="lead">Arduino UNO R4 WiFi, DFRobotDFPlayerMini, LiquidCrystal_I2C, PubSubClient, WiFiS3 และ HiveMQ public broker</p>
+      </div>
+      <div class="info-card">
+        <h3>จุดเด่นของการออกแบบ</h3>
+        <p class="lead">เชื่อมต่อ WiFi และ MQTT แบบไม่บล็อก ทำให้ปุ่มกดและการเล่นเพลงยังทำงานต่อได้แม้เครือข่ายหลุด</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOURCE CODE -->
+<section id="code">
+  <div class="wrap">
+    <h2>Source Code</h2>
+    <p class="lead">โค้ดเต็มอยู่ใน GitHub ส่วนนี้แสดงโค้ดหลักของโปรแกรม</p>
+    <div class="codebox">
+      <div class="codebar">
+        <span>mini_mp3_player.ino</span>
+        <button class="copy" type="button" id="copy-btn">คัดลอก</button>
+      </div>
+      <!-- TODO: วางโค้ดจริงแทนข้อความในแท็ก <pre><code> ด้านล่าง (ใช้ &lt; แทน < และ &gt; แทน >) -->
+<pre><code id="code-text">/*
+  Mini MP3 Player + LCD + MQTT
+*/
+
+#include <DFRobotDFPlayerMini.h>
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+#include <WiFiS3.h>
+#include <PubSubClient.h>
+
+// ===== Settings =====
+const char* WIFI_SSID = "WHAT";
+const char* WIFI_PASS = "password";
+const char* MQTT_HOST = "broker.hivemq.com";
+const int   MQTT_PORT = 1883;
+const char* BASE      = "mini-mp3-7421";   // must match the web page
+
+// Song names, in the same order as the files 0001.mp3, 0002.mp3, ...
+const int NUM_SONGS = 3;
+const char* songNames[NUM_SONGS] = {"Song 1", "Song 2", "Song 3"};
+// ====================
+
+const int BTN_PREV = 2;
+const int BTN_PLAY = 3;
+const int BTN_NEXT = 4;
+const int POT_PIN  = A0;
+const int PIN_LED_RED = 5, PIN_LED_BLUE = 6, PIN_LED_YELLOW = 9;
+const int btnPins[3] = {BTN_PREV, BTN_PLAY, BTN_NEXT};
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);   // try 0x3F if the screen stays blank
+DFRobotDFPlayerMini player;
+WiFiClient wifiClient;
+PubSubClient mqtt(wifiClient);
+
+char tCmd[40], tStatus[40], tPlaylist[40], tOnline[40];
+
+int currentSong = 0;       // 0-based
+bool playing = false;
+bool started = false;
+int volume = 50;           // 0-100 (shown on LCD)
+int eqMode = 0;            // 0=Normal 1=Pop 2=Rock 3=Jazz 4=Classic 5=Bass
+bool lastState[3] = {HIGH, HIGH, HIGH};
+unsigned long lastPress[3] = {0, 0, 0};
+unsigned long lastVolCheck = 0;
+unsigned long lastMqttTry = 0;
+
+// ---------- Status LEDs (only one is on at a time) ----------
+void setLEDs(bool red, bool blue, bool yellow) {
+  digitalWrite(PIN_LED_RED, red ? HIGH : LOW);
+  digitalWrite(PIN_LED_BLUE, blue ? HIGH : LOW);
+  digitalWrite(PIN_LED_YELLOW, yellow ? HIGH : LOW);
+}
+
+void updateLED() {
+  if (WiFi.status() != WL_CONNECTED || !mqtt.connected()) setLEDs(1, 0, 0);  // red: not connected
+  else if (playing) setLEDs(0, 1, 0);                                        // blue: playing
+  else setLEDs(0, 0, 1);                                                     // yellow: paused
+}
+
+// ---------- MQTT publish ----------
+void publishStatus() {
+  if (!mqtt.connected()) return;
+  char msg[160];
+  snprintf(msg, sizeof(msg),
+           "{\"song\":%d,\"name\":\"%s\",\"playing\":%s,\"volume\":%d,\"eq\":%d}",
+           currentSong + 1, songNames[currentSong], playing ? "true" : "false", volume, eqMode);
+  mqtt.publish(tStatus, msg, true);   // retained
+}
+
+void publishPlaylist() {
+  char msg[300] = "{\"songs\":[";
+  for (int i = 0; i < NUM_SONGS; i++) {
+    if (i > 0) strncat(msg, ",", sizeof(msg) - strlen(msg) - 1);
+    strncat(msg, "\"", sizeof(msg) - strlen(msg) - 1);
+    strncat(msg, songNames[i], sizeof(msg) - strlen(msg) - 1);
+    strncat(msg, "\"", sizeof(msg) - strlen(msg) - 1);
+  }
+  strncat(msg, "]}", sizeof(msg) - strlen(msg) - 1);
+  mqtt.publish(tPlaylist, msg, true); // retained
+}
+
+// ---------- Player + LCD ----------
+void setVolume(int percent) {
+  player.volume(map(percent, 0, 100, 0, 30));
+}
+
+void setEQ(int mode) {
+  eqMode = constrain(mode, 0, 5);
+  player.EQ(eqMode);
+  Serial.print("EQ ");
+  Serial.println(eqMode);
+  publishStatus();
+}
+
+void showVolume() {
+  lcd.setCursor(9, 1);
+  lcd.print("Vol:    ");
+  lcd.setCursor(13, 1);
+  lcd.print(volume);
+}
+
+void showScreen() {
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print(songNames[currentSong]);
+  lcd.setCursor(0, 1);
+  lcd.print(playing ? "Playing" : "Paused");
+  showVolume();
+}
+
+void playSong(int index) {
+  currentSong = (index + NUM_SONGS) % NUM_SONGS;
+  player.play(currentSong + 1);
+  playing = true;
+  started = true;
+  Serial.print("Playing song ");
+  Serial.println(currentSong + 1);
+  showScreen();
+  publishStatus();
+}
+
+void togglePlay() {
+  if (!started) {
+    playSong(currentSong);
+    return;
+  }
+  if (playing) {
+    player.pause();
+    playing = false;
+    Serial.println("Paused");
+  } else {
+    player.start();
+    playing = true;
+    Serial.println("Resumed");
+  }
+  showScreen();
+  publishStatus();
+}
+
+// ---------- MQTT receive ----------
+void onMessage(char* topic, byte* payload, unsigned int len) {
+  char cmd[16];
+  len = min(len, (unsigned int)(sizeof(cmd) - 1));
+  memcpy(cmd, payload, len);
+  cmd[len] = '\0';
+  Serial.print("MQTT cmd: ");
+  Serial.println(cmd);
+
+  if (strcmp(cmd, "toggle") == 0) togglePlay();
+  else if (strcmp(cmd, "prev") == 0) playSong(currentSong - 1);
+  else if (strcmp(cmd, "next") == 0) playSong(currentSong + 1);
+  else if (strncmp(cmd, "play:", 5) == 0) {
+    int n = atoi(cmd + 5);
+    if (n >= 1 && n <= NUM_SONGS) playSong(n - 1);
+  }
+  else if (strncmp(cmd, "eq:", 3) == 0) {
+    int n = atoi(cmd + 3);
+    if (n >= 0 && n <= 5) setEQ(n);
+  }
+}
+
+// ---------- Connection (non-blocking) ----------
+void ensureConnections() {
+  if (WiFi.status() != WL_CONNECTED) {
+    if (millis() - lastMqttTry < 5000) return;
+    lastMqttTry = millis();
+    Serial.println("Connecting WiFi...");
+    WiFi.begin(WIFI_SSID, WIFI_PASS);
+    return;
+  }
+  if (!mqtt.connected()) {
+    if (millis() - lastMqttTry < 5000) return;
+    lastMqttTry = millis();
+    String id = "uno-r4-" + String(random(0xffff), HEX);
+    Serial.println("Connecting MQTT...");
+    // last will: publish "0" (retained) to BASE/online if we drop off
+    if (mqtt.connect(id.c_str(), NULL, NULL, tOnline, 0, true, "0")) {
+      Serial.println("MQTT OK");
+      mqtt.publish(tOnline, "1", true);
+      mqtt.subscribe(tCmd);
+      publishPlaylist();
+      publishStatus();
+    } else {
+      Serial.print("MQTT failed, rc=");
+      Serial.println(mqtt.state());
+    }
+  }
+}
+
+void setup() {
+  Serial.begin(115200);
+  for (int i = 0; i < 3; i++) pinMode(btnPins[i], INPUT_PULLUP);
+  pinMode(PIN_LED_RED, OUTPUT);
+  pinMode(PIN_LED_BLUE, OUTPUT);
+  pinMode(PIN_LED_YELLOW, OUTPUT);
+  setLEDs(1, 0, 0);                     // red until connected
+
+  snprintf(tCmd, sizeof(tCmd), "%s/cmd", BASE);
+  snprintf(tStatus, sizeof(tStatus), "%s/status", BASE);
+  snprintf(tPlaylist, sizeof(tPlaylist), "%s/playlist", BASE);
+  snprintf(tOnline, sizeof(tOnline), "%s/online", BASE);
+
+  lcd.init();
+  lcd.backlight();
+  lcd.print("Mini MP3 Player");
+
+  Serial1.begin(9600);
+  delay(1000);
+  Serial.println("Starting DFPlayer...");
+  if (!player.begin(Serial1)) {
+    Serial.println("DFPlayer ERROR");
+    lcd.clear();
+    lcd.print("DFPlayer error");
+    lcd.setCursor(0, 1);
+    lcd.print("Check wiring/SD");
+    setLEDs(1, 0, 0);                   // red = error
+    while (true) delay(1000);
+  }
+  Serial.println("DFPlayer OK");
+  setVolume(volume);
+  player.EQ(eqMode);                    // start with Normal EQ
+  showScreen();
+
+  mqtt.setServer(MQTT_HOST, MQTT_PORT);
+  mqtt.setCallback(onMessage);
+  mqtt.setBufferSize(512);
+}
+
+void loop() {
+  ensureConnections();
+  mqtt.loop();
+
+  // Buttons
+  for (int i = 0; i < 3; i++) {
+    bool state = digitalRead(btnPins[i]);
+    if (lastState[i] == HIGH && state == LOW && millis() - lastPress[i] > 200) {
+      lastPress[i] = millis();
+      if (i == 0) playSong(currentSong - 1);
+      else if (i == 1) togglePlay();
+      else playSong(currentSong + 1);
+    }
+    lastState[i] = state;
+  }
+
+  // Volume from potentiometer (0-100)
+  if (millis() - lastVolCheck > 150) {
+    lastVolCheck = millis();
+    int newVol = map(analogRead(POT_PIN), 0, 1023, 0, 100);
+    if (abs(newVol - volume) >= 2) {
+      volume = newVol;
+      setVolume(volume);
+      showVolume();
+      publishStatus();
+    }
+  }
+
+  // Auto-advance when a song ends
+  if (player.available()) {
+    if (player.readType() == DFPlayerPlayFinished) {
+      playSong(currentSong + 1);
+    }
+  }
+
+  updateLED();
+}
+</code></pre>
+    </div>
+    <div class="actions" style="margin-top:32px">
+      <a class="btn btn-primary" href="https://github.com/22Lpxr/IOT-MP3-Players" id="github-link-2" target="_blank" rel="noopener">ดูโค้ดทั้งหมดบน GitHub</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- FOOTER: team -->
+<footer id="team">
+  <div class="wrap">
+    <h2>สมาชิกในทีม</h2>
+    <p class="lead" style="margin-inline:auto">ผู้จัดทำโครงงาน</p>
+
+    <!-- TODO: รูปกลุ่ม -> เปลี่ยนข้อความในกล่องเป็น <img src="assets/team.jpg" alt="รูปสมาชิกในทีมทั้ง 3 คน"> -->
+    <div class="group">
+      <div class="slot r-group" role="img" aria-label="ช่องใส่รูปกลุ่มสมาชิกในทีม">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><circle cx="17" cy="9" r="2.6"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5M16 14.6c2.6 0 4.8 1.5 5.5 4.6"/></svg>
+          <img src="https://drive.google.com/thumbnail?id=1FlVbkMgODe8Fz59BDfcYhQaDi6hulPXg&sz=w1600" alt="รูปสมาชิกในทีมทั้ง 3 คน">
+        </div>
+      </div>
+    </div>
+
+    <!-- TODO: แก้ชื่อและรหัสนักศึกษาของสมาชิกทั้ง 3 คน -->
+    <ul class="members">
+      <li class="member"><b>วีรชัย หล่อปา</b><span>68070175</span></li>
+      <li class="member"><b>พชรพล เจริญ</b><span>68070113</span></li>
+      <li class="member"><b>เมธาวินท์ โชติช่วง</b><span>68070151</span></li>
+    </ul>
+    <p class="copyright">Mini Project Physical Computing, คณะเทคโนโลยีสารสนเทศ สจล.</p>
+  </div>
+</footer>
+
+<script>
+  // ใส่ลิงก์จริงที่นี่ที่เดียว
+  var LINKS = {
+    poster: "https://drive.google.com/drive/folders/1UArR2UbEo8wwduD6uDtWpWT_jLwsrhoj?usp=drive_link",
+    github: "https://github.com/22Lpxr/IOT-MP3-Players"
+  };
+  document.getElementById("poster-link").href = LINKS.poster;
+  document.getElementById("poster-link").target = LINKS.poster === "#" ? "_self" : "_blank";
+  ["github-link","github-link-2"].forEach(function(id){
+    document.getElementById(id).href = LINKS.github;
+  });
+
+  // ปุ่มคัดลอกโค้ด
+  var btn = document.getElementById("copy-btn");
+  btn.addEventListener("click", function(){
+    var text = document.getElementById("code-text").textContent;
+    var done = function(){ btn.textContent = "คัดลอกแล้ว"; setTimeout(function(){ btn.textContent = "คัดลอก"; }, 1800); };
+    try { navigator.clipboard.writeText(text).then(done); } catch (e) {}
+  });
+
+  // Lightbox สำหรับคลิกดูภาพโครงงานขนาดเต็ม
+  var lightbox = document.getElementById("lightbox");
+  var lbImg = document.getElementById("lightbox-img");
+  var lbCap = document.getElementById("lightbox-cap");
+  document.querySelectorAll(".gallery figure").forEach(function(fig){
+    fig.addEventListener("click", function(){
+      var img = fig.querySelector("img");
+      var cap = fig.querySelector(".cap");
+      if (img && lightbox) {
+        lbImg.src = img.src;
+        lbImg.alt = img.alt || "ภาพขยาย";
+        lbCap.textContent = cap ? cap.textContent : "";
+        lightbox.classList.add("open");
+        lightbox.setAttribute("aria-hidden", "false");
+      }
+    });
+  });
+  if (lightbox) {
+    lightbox.addEventListener("click", function(e){
+      if (e.target === lightbox || e.target.classList.contains("lightbox-close")) {
+        lightbox.classList.remove("open");
+        lightbox.setAttribute("aria-hidden", "true");
+      }
+    });
+    document.addEventListener("keydown", function(e){
+      if (e.key === "Escape" && lightbox.classList.contains("open")) {
+        lightbox.classList.remove("open");
+        lightbox.setAttribute("aria-hidden", "true");
+      }
+    });
+  }
+</script>
+
+<!-- Lightbox Modal -->
+<div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-label="ขยายภาพ">
+  <div class="lightbox-content">
+    <button class="lightbox-close" type="button" aria-label="ปิด">&times;</button>
+    <img id="lightbox-img" src="" alt="ภาพขยาย">
+    <p id="lightbox-cap"></p>
+  </div>
+</div>
+</body>
+</html>
