@@ -110,7 +110,7 @@
 <section id="video" class="alt">
   <div class="wrap">
     <h2>วิดีโอนำเสนอ</h2>
-    <p class="lead">ดูการทำงานของเครื่องเล่นและการควบคุมผ่านหน้าเว็บ</p>
+    <p class="lead"></p>
     <!-- TODO: วางแทนข้อความในกล่องนี้ เช่น
          <iframe src="https://drive.google.com/file/d/1pqZ9BjzPuF6sbrPWgEV2yLT88MkvJqR9/preview" title="วิดีโอนำเสนอ" allowfullscreen></iframe>
          หรือ <video src="assets/demo.mp4" controls></video> -->
@@ -131,22 +131,28 @@
     <div class="gallery">
       <!-- TODO: เปลี่ยนข้อความในกล่องเป็น <img src="https://drive.google.com/file/d/1E0lE1fG9T9Hfn4hgIO4vkG61xziaR4an/view?usp=sharing" alt="..."> -->
       <figure>
-        <div class="slot r-shot" role="img" aria-label="ภาพวงจรจริง">
-          <img src="https://lh3.googleusercontent.com/d/1E0lE1fG9T9Hfn4hgIO4vkG61xziaR4an=w1600" alt="ภาพวงจรจริง">
-        </div>
-        <figcaption class="cap">ภาพวงจรจริง</figcaption>
+        <a class="gallery-link" href="https://lh3.googleusercontent.com/d/1E0lE1fG9T9Hfn4hgIO4vkG61xziaR4an=s0" target="_blank" rel="noopener noreferrer" title="เปิดดูภาพขนาดเต็มในแท็บใหม่">
+          <div class="slot r-shot" role="img" aria-label="ภาพวงจรจริง">
+            <img src="https://lh3.googleusercontent.com/d/1E0lE1fG9T9Hfn4hgIO4vkG61xziaR4an=w1600" alt="ภาพวงจรจริง">
+          </div>
+          <figcaption class="cap">ภาพวงจรจริง</figcaption>
+        </a>
       </figure>
       <figure>
-        <div class="slot r-shot" role="img" aria-label="จอ LCD แสดงชื่อเพลงและระดับเสียง">
-          <img src="https://lh3.googleusercontent.com/d/1XkeG1uQVeoLPAzsWw0emwlJOdJh9yR84=w1600" alt="จอ LCD แสดงชื่อเพลงและระดับเสียง">
-        </div>
-        <figcaption class="cap">จอ LCD แสดงชื่อเพลงและระดับเสียง</figcaption>
+        <a class="gallery-link" href="https://lh3.googleusercontent.com/d/1XkeG1uQVeoLPAzsWw0emwlJOdJh9yR84=s0" target="_blank" rel="noopener noreferrer" title="เปิดดูภาพขนาดเต็มในแท็บใหม่">
+          <div class="slot r-shot" role="img" aria-label="จอ LCD แสดงชื่อเพลงและระดับเสียง">
+            <img src="https://lh3.googleusercontent.com/d/1XkeG1uQVeoLPAzsWw0emwlJOdJh9yR84=w1600" alt="จอ LCD แสดงชื่อเพลงและระดับเสียง">
+          </div>
+          <figcaption class="cap">จอ LCD แสดงชื่อเพลงและระดับเสียง</figcaption>
+        </a>
       </figure>
       <figure>
-        <div class="slot r-shot" role="img" aria-label="หน้าเว็บสำหรับสั่งเล่น/หยุด/เปลี่ยนเพลง">
-          <img src="https://lh3.googleusercontent.com/d/1ru5REaJle3Pq4r9jkJQxXlvxLfogdCiw=w1600" alt="หน้าเว็บสำหรับสั่งเล่น/หยุด/เปลี่ยนเพลง">
-        </div>
-        <figcaption class="cap">หน้าเว็บสำหรับสั่งเล่น/หยุด/เปลี่ยนเพลง</figcaption>
+        <a class="gallery-link" href="https://lh3.googleusercontent.com/d/1ru5REaJle3Pq4r9jkJQxXlvxLfogdCiw=s0" target="_blank" rel="noopener noreferrer" title="เปิดดูภาพขนาดเต็มในแท็บใหม่">
+          <div class="slot r-shot" role="img" aria-label="หน้าเว็บสำหรับสั่งเล่น/หยุด/เปลี่ยนเพลง">
+            <img src="https://lh3.googleusercontent.com/d/1ru5REaJle3Pq4r9jkJQxXlvxLfogdCiw=w1600" alt="หน้าเว็บสำหรับสั่งเล่น/หยุด/เปลี่ยนเพลง">
+          </div>
+          <figcaption class="cap">หน้าเว็บสำหรับสั่งเล่น/หยุด/เปลี่ยนเพลง</figcaption>
+        </a>
       </figure>
     </div>
   </div>
@@ -211,7 +217,7 @@
 <section id="code">
   <div class="wrap">
     <h2>Source Code</h2>
-    <p class="lead">โค้ดเต็มอยู่ใน GitHub ส่วนนี้แสดงโค้ดหลักของโปรแกรม</p>
+    <p class="lead"></p>
     <div class="codebox">
       <div class="codebar">
         <span>mini_mp3_player.ino</span>
@@ -537,47 +543,6 @@ void loop() {
     var done = function(){ btn.textContent = "คัดลอกแล้ว"; setTimeout(function(){ btn.textContent = "คัดลอก"; }, 1800); };
     try { navigator.clipboard.writeText(text).then(done); } catch (e) {}
   });
-
-  // Lightbox สำหรับคลิกดูภาพโครงงานขนาดเต็ม
-  var lightbox = document.getElementById("lightbox");
-  var lbImg = document.getElementById("lightbox-img");
-  var lbCap = document.getElementById("lightbox-cap");
-  document.querySelectorAll(".gallery figure").forEach(function(fig){
-    fig.addEventListener("click", function(){
-      var img = fig.querySelector("img");
-      var cap = fig.querySelector(".cap");
-      if (img && lightbox) {
-        lbImg.src = img.src;
-        lbImg.alt = img.alt || "ภาพขยาย";
-        lbCap.textContent = cap ? cap.textContent : "";
-        lightbox.classList.add("open");
-        lightbox.setAttribute("aria-hidden", "false");
-      }
-    });
-  });
-  if (lightbox) {
-    lightbox.addEventListener("click", function(e){
-      if (e.target === lightbox || e.target.classList.contains("lightbox-close")) {
-        lightbox.classList.remove("open");
-        lightbox.setAttribute("aria-hidden", "true");
-      }
-    });
-    document.addEventListener("keydown", function(e){
-      if (e.key === "Escape" && lightbox.classList.contains("open")) {
-        lightbox.classList.remove("open");
-        lightbox.setAttribute("aria-hidden", "true");
-      }
-    });
-  }
 </script>
-
-<!-- Lightbox Modal -->
-<div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-label="ขยายภาพ">
-  <div class="lightbox-content">
-    <button class="lightbox-close" type="button" aria-label="ปิด">&times;</button>
-    <img id="lightbox-img" src="" alt="ภาพขยาย">
-    <p id="lightbox-cap"></p>
-  </div>
-</div>
 </body>
 </html>

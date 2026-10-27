@@ -81,8 +81,9 @@ model-viewer:active{cursor:grabbing}
 .keywords li{padding:8px 18px;border-radius:var(--r-pill);background:var(--surface-2);border:1px solid var(--line);font-size:14px;color:var(--text)}
 #images .wrap{max-width:1280px}
 .gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:44px}
-.gallery figure{background:var(--surface);border:1px solid var(--line);border-radius:calc(var(--r-card) + 4px);padding:10px 10px 6px;overflow:hidden;transition:border-color .2s ease,transform .2s ease,box-shadow .2s ease;cursor:zoom-in}
+.gallery figure{background:var(--surface);border:1px solid var(--line);border-radius:calc(var(--r-card) + 4px);padding:0;overflow:hidden;transition:border-color .2s ease,transform .2s ease,box-shadow .2s ease;cursor:pointer}
 .gallery figure:hover{border-color:var(--accent);transform:translateY(-6px);box-shadow:0 12px 32px -8px rgba(30,215,96,.22)}
+.gallery-link{display:flex;flex-direction:column;height:100%;padding:10px 10px 6px;color:inherit;text-decoration:none}
 .gallery .slot{border-radius:var(--r-card)}
 .cap{font-size:15px;color:var(--text);font-weight:500;padding:12px 8px 8px}
 
@@ -135,11 +136,4 @@ footer h2{margin-bottom:8px}
   *{transition-duration:.01ms!important}
 }
 
-/* ----- lightbox modal ----- */
-.lightbox{position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:none;place-items:center;padding:24px}
-.lightbox.open{display:grid}
-.lightbox-content{position:relative;max-width:min(92vw,1150px);max-height:90vh;display:flex;flex-direction:column;align-items:center}
-.lightbox-content img{max-width:100%;max-height:80vh;object-fit:contain;border-radius:var(--r-card);border:1px solid var(--line);box-shadow:0 24px 60px rgba(0,0,0,.75)}
-.lightbox-content p{margin-top:14px;color:var(--text);font-size:17px;font-weight:500;text-align:center}
-.lightbox-close{position:absolute;top:-46px;right:0;background:none;border:none;color:var(--muted);font-size:38px;cursor:pointer;line-height:1;padding:4px 8px;transition:color .2s ease}
-.lightbox-close:hover{color:var(--accent)}
+
